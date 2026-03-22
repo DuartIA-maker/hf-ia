@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import random
+import requests
+
+API_KEY = "810bc8056a3c4df2bcdb3ffa1e9383f9"
 
 app = FastAPI()
 
-# LIBERAR ACESSO DO SITE
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,22 +14,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def home():
-    return {"status": "HF Odds Engine Online 🔥"}
-
 @app.get("/value-bets")
 def value_bets():
+    url = "https://api.football-data.org/v4/matches"
+    headers = {"X-Auth-Token": API_KEY}
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
     jogos = []
 
-    for i in range(5):
-        prob = random.uniform(0.55, 0.7)
+    for m in data["matches"][:5]:
+        home = m["homeTeam"]["name"]
+        away = m["awayTeam"]["name"]
+
+        # EXEMPLO SIMPLES (depois melhoramos)
+        prob = 0.6
         odd = 1.8
         ev = prob * odd - 1
 
-        if ev > 0:
-            jogos.append({
-                "jogo": f"Time A vs Time B {i}",
+        jogos.append({
+            "jogo": f"{home} vs {away}",
+            "aposta": "Vitoria Casa",
+            "odd": odd,
+            "ev": round(ev, 2)
+        })
+
+    return jogos": f"Time A vs Time B {i}",
                 "aposta": "Vitoria Casa",
                 "odd": odd,
                 "ev": round(ev, 2)
