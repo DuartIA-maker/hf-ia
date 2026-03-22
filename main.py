@@ -19,7 +19,7 @@ def value_bets():
         if ev > 0:
             jogos.append({
                 "jogo": f"Time A vs Time B {i}",
-                "aposta": "Vitória Casa",
+                "aposta": "Vitoria Casa",
                 "odd": odd,
                 "ev": round(ev, 2)
             })
