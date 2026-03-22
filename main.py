@@ -3,19 +3,25 @@ import random
 
 app = FastAPI()
 
+@app.get("/")
+def home():
+    return {"status": "HF Odds Engine Online 🔥"}
+
 @app.get("/value-bets")
-def value():
+def value_bets():
     jogos = []
+
     for i in range(5):
-        prob = random.uniform(0.55,0.7)
+        prob = random.uniform(0.55, 0.7)
         odd = 1.8
-        ev = prob*odd -1
+        ev = prob * odd - 1
 
         if ev > 0:
             jogos.append({
-                "jogo": f"TimeA vs TimeB {i}",
+                "jogo": f"Time A vs Time B {i}",
                 "aposta": "Vitória Casa",
                 "odd": odd,
-                "ev": round(ev,2)
+                "ev": round(ev, 2)
             })
+
     return jogos
