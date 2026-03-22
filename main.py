@@ -152,3 +152,6 @@ def resultado(acertou: bool):
     save_model(model)
 
     return {"novo_modelo": model}
+    @app.get("/")
+def home():
+    return {"status": "HF Odds Engine Online 🔥"}
